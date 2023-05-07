@@ -1,0 +1,48 @@
+{
+  "type": "message",
+  "body": {
+    "key": {
+      "remoteJid": "558688772869@s.whatsapp.net",
+      "fromMe": false,
+      "id": "9D95AC91183906D0E37B7B94663B9944"
+    },
+    "messageTimestamp": 1683248695,
+    "pushName": "juaum.g👹",
+    "message": {
+      "conversation": "??",
+      "messageContextInfo": {
+        "deviceListMetadata": {
+          "recipientKeyHash": "qiQT8Dk7HxdMow==",
+          "recipientTimestamp": "1683248669"
+        },
+        "deviceListMetadataVersion": 2
+      }
+    },
+    "text": {
+      "messages": [
+        {
+          "key": {
+            "remoteJid": "558688772869@s.whatsapp.net",
+            "fromMe": false,
+            "id": "9D95AC91183906D0E37B7B94663B9944"
+          },
+          "messageTimestamp": 1683248695,
+          "pushName": "juaum.g👹",
+          "message": {
+            "conversation": "??",
+            "messageContextInfo": {
+              "deviceListMetadata": {
+                "recipientKeyHash": "qiQT8Dk7HxdMow==",
+                "recipientTimestamp": "1683248669"
+              },
+              "deviceListMetadataVersion": 2
+            }
+          }
+        }
+      ],
+      "type": "notify"
+    },
+    "msgContent": ""
+  },
+  "instanceKey": "celular2"
+}

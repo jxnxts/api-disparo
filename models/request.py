@@ -1,0 +1,132 @@
+from pydantic import BaseModel, EmailStr, Field
+from typing import Optional, List
+import datetime
+from db.database import Database
+from sqlalchemy.sql.expression import exists
+
+database = Database()
+engine = database.get_db_connection()
+
+# Requests Models Basicas
+class CidadeRequest(BaseModel):
+    id: Optional[int] = Field(None, title="Cidade ID")
+
+class ContatosRequest(BaseModel):
+    # id: Optional[int] = Field(None, title="Contato ID")
+    nome: Optional[str] = Field(None, title="Nome", max_length=100)
+    sobrenome: Optional[str] = Field(None, title="Sobrenome", max_length=100)
+    email: EmailStr = Field(..., title="Email")
+    DDD: Optional[str] = Field(None, title="DDD", max_length=2)
+    telefone: Optional[str] = Field(None, title="Telefone", max_length=9)
+    cidade_id: Optional[int] = Field(None, title="Cidade ID")
+    CEP: Optional[str] = Field(None, title="CEP", max_length=8)
+    lat: Optional[str] = Field(None, title="Latitude", max_length=100)
+    long: Optional[str] = Field(None, title="Longitude", max_length=100)
+    endereco: Optional[str] = Field(None, title="Endereço", max_length=100)
+    numero: Optional[str] = Field(None, title="Número", max_length=100)
+    grupos: Optional[List[int]] = Field(None, title="Grupos")
+    instances: Optional[List[int]] = Field(None, title="Instâncias")
+    tags: Optional[List[int]] = Field(None, title="Tags")
+
+
+
+class ContatosCreateRequest(BaseModel):
+    id: Optional[int] = Field(None, title="Contato ID")
+    nome: Optional[str] = Field(None, title="Nome", max_length=100)
+    sobrenome: Optional[str] = Field(None, title="Sobrenome", max_length=100)
+    email: EmailStr = Field(..., title="Email")
+    DDD: Optional[str] = Field(None, title="DDD", max_length=2)
+    telefone: Optional[str] = Field(None, title="Telefone", max_length=15)
+    cidade_id: Optional[int] = Field(None, title="Cidade ID")
+    CEP: Optional[str] = Field(None, title="CEP", max_length=8)
+    lat: Optional[str] = Field(None, title="Latitude", max_length=100)
+    long: Optional[str] = Field(None, title="Longitude", max_length=100)
+    endereco: Optional[str] = Field(None, title="Endereço", max_length=100)
+    numero: Optional[str] = Field(None, title="Número", max_length=100)
+    grupos: Optional[List[int]] = Field(None, title="Grupos")
+    instances: Optional[List[int]] = Field(None, title="Instâncias")
+    tags: Optional[List[int]] = Field(None, title="Tags")
+
+class EtiquetasRequest(BaseModel):
+    id: Optional[int] = Field(None, title="Etiqueta ID")
+    nome: Optional[str] = Field(None, title="Nome", max_length=100)
+
+class GrupoParticipantesRequest(BaseModel):
+    id: Optional[int] = Field(None, title="Grupo Participante ID")
+    contato: Optional[int] = Field(None, title="Contato")
+    grupo: Optional[int] = Field(None, title="Grupo")
+
+class GruposRequest(BaseModel):
+    id: Optional[int] = Field(None, title="Grupo ID")
+    number_group: Optional[str] = Field(None, title="Número do Grupo", max_length=100)
+    nome: Optional[str] = Field(None, title="Nome", max_length=100)
+    instance: Optional[str] = Field(None, title="Instância", max_length=100)
+    admin: Optional[str] = Field(None, title="Admin", max_length=100)
+    invitationLink: Optional[str] = Field(None, title="invitationLink", max_length=100)
+    creation: Optional[datetime.datetime] = Field(None, title="creation")
+    communityId: Optional[str] = Field(None, title="communityId", max_length=100)
+    ativo: Optional[bool] = Field(None, title="Ativo")
+    cidade: Optional[int] = Field(None, title="Cidade")
+    tema: Optional[int] = Field(None, title="Tema")
+
+class InstanceRequest(BaseModel):
+    id: Optional[int] = Field(None, title="Instância ID")
+    instanceId: Optional[str] = Field(None, title="Chave", max_length=100)
+    token: Optional[str] = Field(None, title="Nome", max_length=100)
+    nome: Optional[str] = Field(None, title="Número", max_length=100)
+    numero: Optional[str] = Field(None, title="Número", max_length=100)
+    tipo_instance: Optional[int] = Field(None, title="Tipo")
+
+class TipoInstanceRequest(BaseModel):
+    id: Optional[int] = Field(None, title="Tipo Instância ID")
+    nome: Optional[str] = Field(None, title="Nome", max_length=100)
+
+
+class CreateGroup(BaseModel):
+    groupName: Optional[str] = Field(None, title="Nome", max_length=100)
+    phones: List[str]
+
+
+
+# Request Models de Update acessorias
+class InstanceUpdateRequest(BaseModel):
+    instance_id: int
+
+    # Adcionar @validator
+
+class TagUpdateRequest(BaseModel):
+    tags: List[str]
+
+    # Adcionar @validator
+
+class GroupUpdateRequest(BaseModel):
+    groups: List[str]
+
+    # Adcionar @validator
+
+
+
+
+
+
+
+
+# Apagar depois
+
+class Country(BaseModel):
+    countries: List[str]
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "countries": ['turkey', 'india'],
+            }
+        }
+
+
+class University(BaseModel):
+    country: Optional[str] = None
+    web_pages: List[str] = []
+    name: Optional[str] = None
+    alpha_two_code: Optional[str] = None
+    domains: List[str] = []

@@ -1,0 +1,24 @@
+{
+  "type": "group_created",
+  "body": {
+    "data": [
+      {
+        "id": "120363133382295435@g.us",
+        "subject": "Rede",
+        "subjectOwner": "556281734523@s.whatsapp.net",
+        "subjectTime": 1683249186,
+        "size": 3,
+        "creation": 1683249186,
+        "owner": "556281734523@s.whatsapp.net",
+        "restrict": false,
+        "announce": false,
+        "participants": [
+          { "id": "556281734523@s.whatsapp.net", "admin": "superadmin" },
+          { "id": "558688860223@s.whatsapp.net", "admin": null },
+          { "id": "558699674067@s.whatsapp.net", "admin": null }
+        ]
+      }
+    ]
+  },
+  "instanceKey": "celular2"
+}
