@@ -11,3 +11,9 @@ from endpoints import Import_grupo
 
 def get_grupos_task(self, id: int, getparticipantes: bool) -> Any:
     return Import_grupo.get_grupos(id, getparticipantes)
+
+
+
+
+
+# @shared_task()

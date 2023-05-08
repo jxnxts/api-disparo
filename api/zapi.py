@@ -1,4 +1,3 @@
-from fastapi import APIRouter
 from models.responses.model_zapi import InstanceStatus, Message, MessageList, GroupMetadata, Participant, QrCodeReturn, DisconectReturn, RestartReturn, CallRejectReturn, DeviceReturn, CreateGroupReturn
 from db.database import Database
 from models.models import Grupos, Instance, Contatos

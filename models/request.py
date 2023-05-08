@@ -2,7 +2,7 @@ from pydantic import BaseModel, EmailStr, Field
 from typing import Optional, List
 import datetime
 from db.database import Database
-from sqlalchemy.sql.expression import exists
+# from sqlalchemy.sql.expression import exists
 
 database = Database()
 engine = database.get_db_connection()
@@ -104,29 +104,8 @@ class GroupUpdateRequest(BaseModel):
 
     # Adcionar @validator
 
-
-
-
-
-
-
-
-# Apagar depois
-
-class Country(BaseModel):
-    countries: List[str]
-
-    class Config:
-        schema_extra = {
-            "example": {
-                "countries": ['turkey', 'india'],
-            }
-        }
-
-
-class University(BaseModel):
-    country: Optional[str] = None
-    web_pages: List[str] = []
-    name: Optional[str] = None
-    alpha_two_code: Optional[str] = None
-    domains: List[str] = []
+class MensagemImagemRequest(BaseModel):
+    phone: str
+    imagem: str
+    caption: Optional[str]
+    
