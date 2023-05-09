@@ -8,7 +8,7 @@ from db.database import Database
 from api.zapi import status_instance, get_chats, get_groups, send_image, send_video, send_audio
 from sqlalchemy import and_, desc
 
-from celery_tasks.tasks import get_grupos_task
+from celery_tasks.mensagens import send_image_task
 from config.celery_utils import get_task_info
 import datetime
 
@@ -24,7 +24,13 @@ engine = database.get_db_connection()
 
 
 @router.post("/image/{id}")
-async def enviar_imagem(id: int, image: MensagemImagemRequest):
+async def enviar_image_async(id: int, image: MensagemImagemRequest):
+    task = send_image_task.apply_async(args=[id, image])
+    return JSONResponse({"task_id": task.id})
+
+
+# @router.post("/image/{id}")
+def enviar_imagem(id: int, image: MensagemImagemRequest):
     session = database.get_db_session(engine)
     instance = session.query(Instance).filter(Instance.id == id).first()
 
