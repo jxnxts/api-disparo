@@ -35,7 +35,7 @@ def send_image(instanceId: str, token: str, link: str, legenda: str, phone: str,
         return returnSendImagem
 
     else:
-        # print(data)
+        
         return None
     
 
