@@ -8,8 +8,11 @@ database = Database()
 engine = database.get_db_connection()
 
 # Requests Models Basicas
+
+
 class CidadeRequest(BaseModel):
     id: Optional[int] = Field(None, title="Cidade ID")
+
 
 class ContatosRequest(BaseModel):
     # id: Optional[int] = Field(None, title="Contato ID")
@@ -29,7 +32,6 @@ class ContatosRequest(BaseModel):
     tags: Optional[List[int]] = Field(None, title="Tags")
 
 
-
 class ContatosCreateRequest(BaseModel):
     id: Optional[int] = Field(None, title="Contato ID")
     nome: Optional[str] = Field(None, title="Nome", max_length=100)
@@ -47,27 +49,34 @@ class ContatosCreateRequest(BaseModel):
     instances: Optional[List[int]] = Field(None, title="Instâncias")
     tags: Optional[List[int]] = Field(None, title="Tags")
 
+
 class EtiquetasRequest(BaseModel):
     id: Optional[int] = Field(None, title="Etiqueta ID")
     nome: Optional[str] = Field(None, title="Nome", max_length=100)
+
 
 class GrupoParticipantesRequest(BaseModel):
     id: Optional[int] = Field(None, title="Grupo Participante ID")
     contato: Optional[int] = Field(None, title="Contato")
     grupo: Optional[int] = Field(None, title="Grupo")
 
+
 class GruposRequest(BaseModel):
     id: Optional[int] = Field(None, title="Grupo ID")
-    number_group: Optional[str] = Field(None, title="Número do Grupo", max_length=100)
+    number_group: Optional[str] = Field(
+        None, title="Número do Grupo", max_length=100)
     nome: Optional[str] = Field(None, title="Nome", max_length=100)
     instance: Optional[str] = Field(None, title="Instância", max_length=100)
     admin: Optional[str] = Field(None, title="Admin", max_length=100)
-    invitationLink: Optional[str] = Field(None, title="invitationLink", max_length=100)
+    invitationLink: Optional[str] = Field(
+        None, title="invitationLink", max_length=100)
     creation: Optional[datetime.datetime] = Field(None, title="creation")
-    communityId: Optional[str] = Field(None, title="communityId", max_length=100)
+    communityId: Optional[str] = Field(
+        None, title="communityId", max_length=100)
     ativo: Optional[bool] = Field(None, title="Ativo")
     cidade: Optional[int] = Field(None, title="Cidade")
     tema: Optional[int] = Field(None, title="Tema")
+
 
 class InstanceRequest(BaseModel):
     id: Optional[int] = Field(None, title="Instância ID")
@@ -76,6 +85,7 @@ class InstanceRequest(BaseModel):
     nome: Optional[str] = Field(None, title="Número", max_length=100)
     numero: Optional[str] = Field(None, title="Número", max_length=100)
     tipo_instance: Optional[int] = Field(None, title="Tipo")
+
 
 class TipoInstanceRequest(BaseModel):
     id: Optional[int] = Field(None, title="Tipo Instância ID")
@@ -87,22 +97,24 @@ class CreateGroup(BaseModel):
     phones: List[str]
 
 
-
 # Request Models de Update acessorias
 class InstanceUpdateRequest(BaseModel):
     instance_id: int
 
     # Adcionar @validator
 
+
 class TagUpdateRequest(BaseModel):
     tags: List[str]
 
     # Adcionar @validator
 
+
 class GroupUpdateRequest(BaseModel):
     groups: List[str]
 
     # Adcionar @validator
+
 
 class MensagemImagemRequest(BaseModel):
     phone: str
@@ -110,8 +122,30 @@ class MensagemImagemRequest(BaseModel):
     caption: Optional[str]
     delayMessage: Optional[int]
 
+
+class MensagemVideoRequest(BaseModel):
+    phone: str
+    video: str
+    caption: Optional[str]
+    delayMessage: Optional[int]
+
+
+class MensagemAudioRequest(BaseModel):
+    phone: str
+    audio: str
+    delayMessage: Optional[int]
+    delayTyping: Optional[int]
+
+
 class MensagemImagemRequestGrupo(BaseModel):
     imagem: str
     caption: Optional[str]
-    
-    
+
+
+class MensagemAudioRequestGrupo(BaseModel):
+    audio: str
+    delayTyping: int
+
+class MensagemVideoRequestGrupo(BaseModel):
+    video: str
+    caption: Optional[str]

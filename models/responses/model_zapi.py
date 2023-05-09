@@ -2,10 +2,18 @@ from pydantic import BaseModel
 from typing import List, Optional
 
 
+class ReturnEnvio(BaseModel):
+    zaapId: str
+    messageId: str
+    id: str
+
+
 class ReturnEnvioImagem(BaseModel):
     zaapId: str
     messageId: str
     id: str
+
+
 class CreateGroupReturn(BaseModel):
 
     phone: str
