@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from starlette.responses import JSONResponse
-from models.request import GruposRequest, MensagemImagemRequestGrupo
+from models.request import GruposRequest, MensagemImagemRequestGrupo, MensagemImagemRequest
 from models.response import Response
 from models.models import Grupos, Instance
 from db.database import Database
@@ -22,6 +22,25 @@ router = APIRouter(
 database = Database()
 engine = database.get_db_connection()
 
+@router.post("/image/{id}")
+async def enviar_imagem(id: int, image: MensagemImagemRequest):
+    session = database.get_db_session(engine)
+    instance = session.query(Instance).filter(Instance.id == id).first()
+
+    # Verifica o status da conexção com o whats
+    instance_status = status_instance(
+        instance.id, instance.instanceId, instance.token)
+    if instance_status.connected == True:
+
+        url = image.image
+        legenda = image.caption
+        phone = image.phone
+        delay = image.delayMessage
+
+        mensagem = send_image(instance.instanceId, instance.token, url, legenda, phone, delay)
+
+        return Response(mensagem, 200, "sucess.", False)
+    return Response(None, 400, f"{instance_status.error}.", True)
 
 
 @router.post("/image_grupos/{id}")
