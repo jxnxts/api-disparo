@@ -106,6 +106,12 @@ class GroupUpdateRequest(BaseModel):
 
 class MensagemImagemRequest(BaseModel):
     phone: str
+    image: str
+    caption: Optional[str]
+    delayMessage: Optional[int]
+
+class MensagemImagemRequestGrupo(BaseModel):
     imagem: str
     caption: Optional[str]
+    
     

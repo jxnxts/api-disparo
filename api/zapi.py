@@ -1,7 +1,8 @@
-from models.responses.model_zapi import InstanceStatus, Message, MessageList, GroupMetadata, Participant, QrCodeReturn, DisconectReturn, RestartReturn, CallRejectReturn, DeviceReturn, CreateGroupReturn
+from models.responses.model_zapi import InstanceStatus, Message, MessageList, GroupMetadata, Participant, QrCodeReturn, DisconectReturn, RestartReturn, CallRejectReturn, DeviceReturn, CreateGroupReturn, ReturnEnvioImagem
 from db.database import Database
 from models.models import Grupos, Instance, Contatos
 from models.response import Response
+from models.request import MensagemImagemRequest
 from sqlalchemy import and_, desc
 from typing import List
 import requests
@@ -10,6 +11,40 @@ import json
 
 database = Database()
 engine = database.get_db_connection()
+
+
+def send_image(instanceId: str, token: str, link: str, legenda: str, phone: str, delay: int ):
+    url = f"https://api.z-api.io/instances/{instanceId}/token/{token}/send-image"
+    headers = {
+        "Accept": "*/*",
+        "Content-Type": "application/json"
+    }
+      
+    body = MensagemImagemRequest(phone=phone, image=link, caption=legenda, delayMessage=delay)
+
+
+    # json_data = json.dumps(body.dict())
+    json_data = body.dict()
+
+    response = requests.post(url, headers=headers, json=json_data)
+
+    if response.status_code == 200:
+        data = response.json()
+        returnSendImagem = ReturnEnvioImagem(**data)
+
+        return returnSendImagem
+
+    else:
+        # print(data)
+        return None
+    
+
+
+
+
+
+
+
 
 
 def create_group(instanceId: str, token: str, grupo) -> CreateGroupReturn:
