@@ -144,7 +144,8 @@ class MensagemImagemRequestGrupo(BaseModel):
 
 class MensagemAudioRequestGrupo(BaseModel):
     audio: str
-    delayTyping: int
+    delayTyping: Optional[int]
+
 
 class MensagemVideoRequestGrupo(BaseModel):
     video: str
