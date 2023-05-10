@@ -78,20 +78,20 @@ class MessageList(BaseModel):
 
 
 class Participant(BaseModel):
-    phone: str
-    isAdmin: bool
-    isSuperAdmin: bool
+    phone: Optional[str]
+    isAdmin: Optional[bool]
+    isSuperAdmin: Optional[bool]
 
 
 class GroupMetadata(BaseModel):
-    phone: str
-    description: str
-    owner: str
-    subject: str
-    creation: int
-    invitationLink: str
+    phone: Optional[str]
+    description: Optional[str]
+    owner: Optional[str]
+    subject: Optional[str]
+    creation: Optional[int]
+    invitationLink: Optional[str]
     communityId: Optional[str]
-    isGroupAnnouncement: bool
+    isGroupAnnouncement: Optional[bool]
     participants: List[Participant]
-    subjectTime: int
-    subjectOwner: str
+    subjectTime: Optional[int]
+    subjectOwner: Optional[str]

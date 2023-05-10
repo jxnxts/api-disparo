@@ -202,8 +202,8 @@ def status_instance(id: str, instanceId: str, token: str) -> InstanceStatus:
         return None
 
 
-def get_chats(instanceId: str, token: str) -> MessageList:
-    url = f"https://api.z-api.io/instances/{instanceId}/token/{token}/chats"
+def get_chats(instanceId: str, token: str):
+    url = f"https://api.z-api.io/instances/{instanceId}/token/{token}/chats?page=0&pageSize=1000"
     headers = {
         "Accept": "*/*"
     }
@@ -212,7 +212,7 @@ def get_chats(instanceId: str, token: str) -> MessageList:
     if response.status_code == 200:
         data = response.json()
         messages = [Message(**message_data) for message_data in data]
-        return MessageList(messages=messages)
+        return messages
     else:
         return None
 
