@@ -61,26 +61,28 @@ def get_grupos(id: int, getparticipantes: bool):
                 grupo_task_result = AsyncResult(grupo_task.id)
                 while not grupo_task_result.ready():
                     time.sleep(1)
+
                 grupoData = grupo_task_result.result
 
                 grupo_existente = session.query(Grupos).filter(
                     Grupos.number_group == numberGroup).first()
 
                 if not grupo_existente:
-                    creationDate = datetime.datetime.fromtimestamp(
-                        grupoData.creation / 1000.0)
-                    new_grupo = Grupos(
-                        number_group=numberGroup,
-                        nome=grupoData.subject,
-                        instance=instance.instanceId,
-                        admin=grupoData.owner,
-                        ativo=True,
-                        invitationLink=grupoData.invitationLink,
-                        communityId=grupoData.communityId,
-                        creation=creationDate
-                    )
-                    session.add(new_grupo)
-                    session.commit()
+                    try:
+                        new_grupo = Grupos(
+                            number_group=numberGroup,
+                            nome=grupoData.subject,
+                            instance=instance.instanceId,
+                            admin=grupoData.owner,
+                            ativo=True,
+                            invitationLink=grupoData.invitationLink,
+                            communityId=grupoData.communityId,
+                            creation=grupoData.creation
+                        )
+                        session.add(new_grupo)
+                        session.commit()
+                    except Exception as e:
+                        return Response(None, 500, f"Erro inesperado: {str(e)}", True)
 
         return Response(None, 200, "Grupos Coletados.", False)
     return Response(None, 400, f"{instance_status.error}.", True)
