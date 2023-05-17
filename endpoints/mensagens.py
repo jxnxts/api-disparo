@@ -7,8 +7,14 @@ from db.database import Database
 
 from api.zapi import status_instance, get_chats, get_groups, send_image, send_video, send_audio
 from sqlalchemy import and_, desc
-
-from celery_tasks.mensagens import send_image_task
+from celery_tasks.mensagens import (
+    send_image_task,
+    send_image_grupos_task,
+    send_video_task,
+    send_video_grupos_task,
+    send_audio_task,
+    send_audio_grupos_task,
+)
 from config.celery_utils import get_task_info
 import datetime
 
@@ -53,6 +59,11 @@ def enviar_imagem(id: int, image: MensagemImagemRequest):
 
 @router.post("/image_grupos/{id}")
 async def enviar_image_grupos(id: int, image: MensagemImagemRequestGrupo):
+    task = send_image_grupos_task.apply_async(args=[id, image])
+    return JSONResponse({"task_id": task.id})
+
+
+def enviar_image_grupos(id: int, image: MensagemImagemRequestGrupo):
 
     session = database.get_db_session(engine)
     instance = session.query(Instance).filter(Instance.id == id).first()
@@ -63,14 +74,14 @@ async def enviar_image_grupos(id: int, image: MensagemImagemRequestGrupo):
     if instance_status.connected == True:
 
         phones = session.query(Grupos).filter(
-            Grupos.instance == Instance.instanceId).all()
+            Grupos.instance == instance.instanceId).all()
 
         for number_group in phones:
 
             url = image.imagem
             legenda = image.caption
             phone = number_group.number_group
-            delay = 15
+            delay = 10
 
             send_image(instance.instanceId, instance.token,
                        url, legenda, phone, delay)
@@ -81,6 +92,11 @@ async def enviar_image_grupos(id: int, image: MensagemImagemRequestGrupo):
 
 @router.post("/video/{id}")
 async def enviar_video(id: int, video: MensagemVideoRequest):
+    task = send_video_task.apply_async(args=[id, video])
+    return JSONResponse({"task_id": task.id})
+
+
+def enviar_video(id: int, video: MensagemVideoRequest):
     session = database.get_db_session(engine)
     instance = session.query(Instance).filter(Instance.id == id).first()
 
@@ -103,6 +119,11 @@ async def enviar_video(id: int, video: MensagemVideoRequest):
 
 @router.post("/video_grupos/{id}")
 async def enviar_video_grupos(id: int, video: MensagemVideoRequestGrupo):
+    task = send_video_grupos_task.apply_async(args=[id, video])
+    return JSONResponse({"task_id": task.id})
+
+
+def enviar_video_grupos(id: int, video: MensagemVideoRequestGrupo):
     session = database.get_db_session(engine)
     instance = session.query(Instance).filter(Instance.id == id).first()
 
@@ -130,6 +151,11 @@ async def enviar_video_grupos(id: int, video: MensagemVideoRequestGrupo):
 
 @router.post("/audio/{id}")
 async def enviar_audio(id: int, audio: MensagemAudioRequest):
+    task = send_audio_task.apply_async(args=[id, audio])
+    return JSONResponse({"task_id": task.id})
+
+
+def enviar_audio(id: int, audio: MensagemAudioRequest):
     session = database.get_db_session(engine)
     instance = session.query(Instance).filter(Instance.id == id).first()
 
@@ -153,6 +179,11 @@ async def enviar_audio(id: int, audio: MensagemAudioRequest):
 
 @router.post("/audio_grupos/{id}")
 async def enviar_audio_grupos(id: int, audio: MensagemAudioRequestGrupo):
+    task = send_audio_grupos_task.apply_async(args=[id, audio])
+    return JSONResponse({"task_id": task.id})
+
+
+def enviar_audio_grupos(id: int, audio: MensagemAudioRequestGrupo):
     session = database.get_db_session(engine)
     instance = session.query(Instance).filter(Instance.id == id).first()
 

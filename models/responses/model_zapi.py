@@ -92,6 +92,6 @@ class GroupMetadata(BaseModel):
     invitationLink: Optional[str]
     communityId: Optional[str]
     isGroupAnnouncement: Optional[bool]
-    participants: List[Participant]
+    participants: Optional[List[Participant]]
     subjectTime: Optional[int]
     subjectOwner: Optional[str]
