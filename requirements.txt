@@ -2,6 +2,7 @@ amqp==5.1.1
 anyio==3.6.2
 billiard==3.6.4.0
 celery==5.2.7
+celery
 certifi==2023.5.7
 charset-normalizer==3.1.0
 click==8.1.3
@@ -22,6 +23,8 @@ kombu==5.2.4
 prometheus-client==0.16.0
 prompt-toolkit==3.0.38
 pydantic==1.10.7
+pymongo==4.3.3
+pymongo
 PyMySQL==1.0.3
 python-dotenv==1.0.0
 pytz==2023.3
@@ -36,3 +39,4 @@ urllib3==2.0.2
 uvicorn==0.22.0
 vine==5.0.0
 wcwidth==0.2.6
+dnspython
