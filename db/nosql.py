@@ -10,8 +10,9 @@ MONGO_DB_NAME = os.getenv('MONGO_DB_NAME')
 MONGO_USER = os.getenv('MONGO_USER')
 MONGO_PASSWORD = os.getenv('MONGO_PASSWORD')
 
-MONGO_URI = "mongodb+srv://jonatas:88343806@whats.r7qrlcw.mongodb.net/?retryWrites=true&w=majority"
+# MONGO_URI = "mongodb+srv://jonatas:88343806@whats.r7qrlcw.mongodb.net/?retryWrites=true&w=majority"
 
+MONGO_URI = "mongodb://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_HOST}"
 
 class NoSQLDatabase():
     def __init__(self) -> None:

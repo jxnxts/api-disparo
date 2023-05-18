@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  fastapi:
+    build: 
+      context: .
+    image: fastapi:latest
+    ports:
+      - target: 80
+        published: 9003
+        protocol: tcp
+        mode: host
+    env_file:
+      - .env.prod
+    depends_on:
+      - mongo
+      - rabbitmq
+
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: 88343806
+    volumes:
+      - /db:/data/db
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    volumes:
+      - "/data/rabbitmq:/var/lib/rabbitmq"
+
+  celery_worker:
+    build: 
+      context: .
+    image: fastapi:latest
+    command: celery -A main.celery worker --loglevel=info -Q universities,university
+    depends_on:
+      - fastapi
+      - rabbitmq
