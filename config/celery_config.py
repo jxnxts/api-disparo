@@ -1,7 +1,13 @@
 import os
 from functools import lru_cache
+from dotenv import load_dotenv
 from kombu import Queue
 
+load_dotenv()
+
+
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')
 
 def route_task(name, args, kwargs, options, task=None, **kw):
     if ":" in name:
@@ -11,8 +17,8 @@ def route_task(name, args, kwargs, options, task=None, **kw):
 
 
 class BaseConfig:
-    CELERY_BROKER_URL: str = os.environ.get("CELERY_BROKER_URL", "amqp://guest:guest@localhost:5672//")
-    CELERY_RESULT_BACKEND: str = os.environ.get("CELERY_RESULT_BACKEND", "rpc://")
+    CELERY_BROKER_URL: CELERY_BROKER_URL
+    CELERY_RESULT_BACKEND: CELERY_RESULT_BACKEND
 
     CELERY_TASK_QUEUES: list = (
         # default queue
