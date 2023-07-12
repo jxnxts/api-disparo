@@ -122,6 +122,28 @@ class MensagemImagemRequest(BaseModel):
     caption: Optional[str]
     delayMessage: Optional[int]
 
+class MensagemTextRequest(BaseModel):
+    message: str
+    phone: str
+    delayMessage: Optional[int]
+
+class MensagemLinkRequest(BaseModel):
+    message: str
+    phone: str
+    image: Optional[str]
+    linkUrl: Optional[str]
+    title: Optional[str]
+    linkDescription: Optional[str]
+    delayMessage: Optional[int]
+
+# {
+#   "phone": "5511999998888",
+#   "message": "Aqui você coloca um texto sobre o site, atenção esse texto preciso ter o link que será enviado no final da mensagem! Assim: https://z-api.io",
+#   "image": "https://firebasestorage.googleapis.com/v0/b/zaap-messenger-web.appspot.com/o/logo.png?alt=media",
+#   "linkUrl": "https://z-api.io",
+#   "title": "Z-API",
+#   "linkDescription": "Integração com o whatsapp"
+# }
 
 class MensagemVideoRequest(BaseModel):
     phone: str

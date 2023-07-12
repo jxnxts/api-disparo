@@ -7,6 +7,8 @@ from routes.api import router as api_router
 from config.celery_utils import create_celery
 
 
+#ADCIONAR AUTENTICAÇÃO
+
 def create_app() -> FastAPI:
     current_app = FastAPI(title="WhatsX API",
                           description="FastAPI Application Event "

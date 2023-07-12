@@ -16,7 +16,7 @@ from celery_tasks.mensagens import (
     send_audio_grupos_task,
 )
 from config.celery_utils import get_task_info
-import datetime
+# import datetime
 
 
 router = APIRouter(
@@ -29,13 +29,14 @@ database = Database()
 engine = database.get_db_connection()
 
 
+# ROTAS DE IMAGEMS - CRIAR CONEXÃO COM REDIS E S3
 @router.post("/image/{id}")
 async def enviar_image_async(id: int, image: MensagemImagemRequest):
     task = send_image_task.apply_async(args=[id, image])
     return JSONResponse({"task_id": task.id})
 
 
-# @router.post("/image/{id}")
+
 def enviar_imagem(id: int, image: MensagemImagemRequest):
     session = database.get_db_session(engine)
     instance = session.query(Instance).filter(Instance.id == id).first()

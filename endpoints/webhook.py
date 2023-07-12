@@ -17,8 +17,6 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-# database = Database()
-# engine = database.get_db_connection()
 
 # Initialize NoSQL Database
 nosql_db = NoSQLDatabase()

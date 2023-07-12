@@ -31,12 +31,12 @@ async def get_grupos_async(id: int, getparticipantes: bool):
 def get_grupos(id: int, getparticipantes: bool):
     session = database.get_db_session(engine)
 
+    #Filtro da Instanca
     instance = session.query(Instance).filter(Instance.id == id).first()
 
+    # Verificação de Status da Linha (Instancia)
     instance_status = status_instance(
         instance.id, instance.instanceId, instance.token)
-
-    # data = instance_status
 
     if instance_status.connected == True:
         chats_task = get_chats_task.apply_async(

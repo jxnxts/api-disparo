@@ -2,7 +2,7 @@ from models.responses.model_zapi import InstanceStatus, Message, MessageList, Gr
 from db.database import Database
 from models.models import Grupos, Instance, Contatos
 from models.response import Response
-from models.request import MensagemImagemRequest, MensagemVideoRequest, MensagemAudioRequest
+from models.request import MensagemImagemRequest, MensagemVideoRequest, MensagemAudioRequest, MensagemTextRequest, MensagemLinkRequest
 from sqlalchemy import and_, desc
 from typing import List
 import requests
@@ -13,6 +13,50 @@ database = Database()
 engine = database.get_db_connection()
 
 
+def send_text(instanceId: str, token: str, text: str, phone: str, delay: int):
+    url = f"https://api.z-api.io/instances/{instanceId}/token/{token}/send-text"
+    headers = {
+        "Accept": "*/*",
+        "Content-Type": "application/json"
+    }
+    body = MensagemTextRequest(
+        phone=phone, message=text, delayMessage=delay)
+    # json_data = json.dumps(body.dict())
+    json_data = body.dict()
+    response = requests.post(url, headers=headers, json=json_data)
+    if response.status_code == 200:
+        data = response.json()
+        ReturnEnvioMensagem = ReturnEnvio(**data)
+        return ReturnEnvioMensagem
+    else:
+        return None
+    
+
+    
+def send_text_link(instanceId: str, token: str, message: str, phone: str, image: str, linkUrl: str, title: str, linkDescription: str, delay: int):
+    url = f"https://api.z-api.io/instances/{instanceId}/token/{token}/send-link"
+    headers = {
+        "Accept": "*/*",
+        "Content-Type": "application/json"
+    }
+    body = MensagemLinkRequest(
+        message=message, 
+        phone=phone, 
+        image=image,
+        linkUrl=linkUrl, 
+        title=title, 
+        linkDescription=linkDescription,
+        delayMessage=delay)
+    # json_data = json.dumps(body.dict())
+    json_data = body.dict()
+    response = requests.post(url, headers=headers, json=json_data)
+    if response.status_code == 200:
+        data = response.json()
+        ReturnEnvioMensagem = ReturnEnvio(**data)
+        return ReturnEnvioMensagem
+    else:
+        return None
+    
 def send_image(instanceId: str, token: str, link: str, legenda: str, phone: str, delay: int):
     url = f"https://api.z-api.io/instances/{instanceId}/token/{token}/send-image"
     headers = {
@@ -243,6 +287,8 @@ def save_contacts(participant, grupoData: GroupMetadata):
 
     contact = session.query(Contatos).filter_by(telefone=participant).first()
 
+
+    #Reescrever a logica de salvar contato, verificar fluxo de grupos e instancias, tags
     if contact:
         grupos = contact.grupos or []
         grupos.append(grupoData.phone)

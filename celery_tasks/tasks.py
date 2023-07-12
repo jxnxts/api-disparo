@@ -9,12 +9,6 @@ def get_grupos_task(self, id: int, getparticipantes: bool) -> Any:
     return Import_grupo.get_grupos(id, getparticipantes)
 
 
-# @shared_task(bind=True, autoretry_for=(Exception,), retry_backoff=True, retry_kwargs={"max_retries": 5},
-#              name='universities:get_instance_task')
-# def get_instance_task(self, id: int) -> Any:
-#     return Import_grupo.get_instance(id)
-
-
 @shared_task(bind=True, autoretry_for=(Exception,), retry_backoff=True, retry_kwargs={"max_retries": 2},
              name='universities:get_chats_task')
 def get_chats_task(self, instanceId: str, token: str) -> Any:
