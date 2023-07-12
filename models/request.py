@@ -172,3 +172,6 @@ class MensagemAudioRequestGrupo(BaseModel):
 class MensagemVideoRequestGrupo(BaseModel):
     video: str
     caption: Optional[str]
+
+class MensagemTextRequestGrupo(BaseModel):
+    message: str

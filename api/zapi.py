@@ -33,7 +33,7 @@ def send_text(instanceId: str, token: str, text: str, phone: str, delay: int):
     
 
     
-def send_text_link(instanceId: str, token: str, message: str, phone: str, image: str, linkUrl: str, title: str, linkDescription: str, delay: int):
+def send_link(instanceId: str, token: str, message: str, phone: str, image: str, linkUrl: str, title: str, linkDescription: str, delay: int):
     url = f"https://api.z-api.io/instances/{instanceId}/token/{token}/send-link"
     headers = {
         "Accept": "*/*",

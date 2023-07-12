@@ -1,19 +1,22 @@
 from fastapi import APIRouter
 from starlette.responses import JSONResponse
-from models.request import GruposRequest, MensagemImagemRequestGrupo, MensagemImagemRequest, MensagemAudioRequest, MensagemAudioRequestGrupo, MensagemVideoRequest, MensagemVideoRequestGrupo
+from models.request import GruposRequest, MensagemImagemRequestGrupo, MensagemImagemRequest, MensagemAudioRequest, MensagemAudioRequestGrupo, MensagemVideoRequest, MensagemVideoRequestGrupo, MensagemTextRequest, MensagemLinkRequest, MensagemTextRequestGrupo
 from models.response import Response
 from models.models import Grupos, Instance
 from db.database import Database
 
-from api.zapi import status_instance, get_chats, get_groups, send_image, send_video, send_audio
+from api.zapi import status_instance, get_chats, get_groups, send_image, send_video, send_audio, send_text, send_link
 from sqlalchemy import and_, desc
 from celery_tasks.mensagens import (
+    send_text_task,
+    send_text_grupos_task,
     send_image_task,
     send_image_grupos_task,
     send_video_task,
     send_video_grupos_task,
     send_audio_task,
     send_audio_grupos_task,
+    send_link_task
 )
 from config.celery_utils import get_task_info
 # import datetime
@@ -29,7 +32,146 @@ database = Database()
 engine = database.get_db_connection()
 
 
-# ROTAS DE IMAGEMS - CRIAR CONEXÃO COM REDIS E S3
+
+
+@router.post("/text/{id}")
+async def enviar_text_async(id: int, text: MensagemTextRequest):
+    task = send_text_task.apply_async(args=[id, text])
+    return JSONResponse({"task_id": task.id})
+
+def enviar_text(id: int, text: MensagemTextRequest):
+    session = database.get_db_session(engine)
+    instance = session.query(Instance).filter(Instance.id == id).first()
+
+    # Verifica o status da conexção com o whats
+    instance_status = status_instance(
+        instance.id, instance.instanceId, instance.token)
+    if instance_status.connected == True:
+
+        
+        phone = text.phone
+        message = text.message
+        delay = text.delayMessage
+
+        mensagem = send_text(instance.instanceId,
+                              instance.token, message, phone, delay)
+
+        return Response(mensagem, 200, "sucess.", False)
+    return Response(None, 400, f"{instance_status.error}.", True)
+
+
+@router.post("/text_grupos/{id}")
+async def enviar_text_grupos_async(id: int, text: MensagemTextRequestGrupo):
+    task = send_text_grupos_task.apply_async(args=[id, text])
+    return JSONResponse({"task_id": task.id})
+
+def enviar_text_grupos(id: int, text: MensagemTextRequestGrupo):
+
+    session = database.get_db_session(engine)
+    instance = session.query(Instance).filter(Instance.id == id).first()
+
+    # Verifica o status da conexção com o whats
+    instance_status = status_instance(
+        instance.id, instance.instanceId, instance.token)
+    if instance_status.connected == True:
+
+        phones = session.query(Grupos).filter(
+            Grupos.instance == instance.instanceId).all()
+
+        for number_group in phones:
+
+            message = text.message
+            phone = number_group.number_group
+            delay = 10
+
+            send_text(instance.instanceId, instance.token,
+                       message, phone, delay)
+
+        return Response(None, 200, "sucess.", False)
+    return Response(None, 400, f"{instance_status.error}.", True)
+
+
+
+# Link
+
+
+@router.post("/link/{id}")
+async def enviar_link_async(id: int, link: MensagemLinkRequest):
+    task = send_link_task.apply_async(args=[id, link])
+    return JSONResponse({"task_id": task.id})
+
+def enviar_link(id: int, link: MensagemLinkRequest):
+    session = database.get_db_session(engine)
+    instance = session.query(Instance).filter(Instance.id == id).first()
+
+    # Verifica o status da conexção com o whats
+    instance_status = status_instance(
+        instance.id, instance.instanceId, instance.token)
+    if instance_status.connected == True:
+
+        message = link.message
+        image = link.image
+        linkUrl = link.linkUrl
+        title = link.title
+        linkDescription = link.description
+        phone = link.phone
+        delay = link.delayMessage
+
+        mensagem = send_link(instance.instanceId,
+                              instance.token, message, image, linkUrl, title, linkDescription, phone, delay)
+
+        return Response(mensagem, 200, "sucess.", False)
+    return Response(None, 400, f"{instance_status.error}.", True)
+
+
+# @router.post("/text_grupos/{id}")
+# async def enviar_text_grupos_async(id: int, text: MensagemTextRequestGrupo):
+#     task = send_text_grupos_task.apply_async(args=[id, text])
+#     return JSONResponse({"task_id": task.id})
+
+# def enviar_text_grupos(id: int, text: MensagemTextRequestGrupo):
+
+#     session = database.get_db_session(engine)
+#     instance = session.query(Instance).filter(Instance.id == id).first()
+
+#     # Verifica o status da conexção com o whats
+#     instance_status = status_instance(
+#         instance.id, instance.instanceId, instance.token)
+#     if instance_status.connected == True:
+
+#         phones = session.query(Grupos).filter(
+#             Grupos.instance == instance.instanceId).all()
+
+#         for number_group in phones:
+
+#             message = text.message
+#             phone = number_group.number_group
+#             delay = 10
+
+#             send_text(instance.instanceId, instance.token,
+#                        message, phone, delay)
+
+#         return Response(None, 200, "sucess.", False)
+#     return Response(None, 400, f"{instance_status.error}.", True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @router.post("/image/{id}")
 async def enviar_image_async(id: int, image: MensagemImagemRequest):
     task = send_image_task.apply_async(args=[id, image])
