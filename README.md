@@ -30,6 +30,7 @@ https://www.architect.io/blog/2021-01-19/rabbitmq-docker-tutorial/
 https://medium.com/cuddle-ai/async-architecture-with-fastapi-celery-and-rabbitmq-c7d029030377
 
 
+docker-compose -f docker-compose.dev.yml down
 
 
 docker-compose -f docker-compose.dev.yml build

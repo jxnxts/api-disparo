@@ -33,23 +33,27 @@ def send_text(instanceId: str, token: str, text: str, phone: str, delay: int):
     
 
     
-def send_link(instanceId: str, token: str, message: str, phone: str, image: str, linkUrl: str, title: str, linkDescription: str, delay: int):
+def send_link(instanceId: str, token: str, message: str, phone: str, image: str, linkUrl: str, title: str, linkDescription: str, linkType: str, delay: int):
     url = f"https://api.z-api.io/instances/{instanceId}/token/{token}/send-link"
     headers = {
         "Accept": "*/*",
         "Content-Type": "application/json"
     }
     body = MensagemLinkRequest(
-        message=message, 
         phone=phone, 
+        message=message, 
         image=image,
         linkUrl=linkUrl, 
         title=title, 
         linkDescription=linkDescription,
-        delayMessage=delay)
+        linkType=linkType,
+        delayMessage=delay,)
+    
     # json_data = json.dumps(body.dict())
     json_data = body.dict()
+    # print(json_data)
     response = requests.post(url, headers=headers, json=json_data)
+    # print(response)
     if response.status_code == 200:
         data = response.json()
         ReturnEnvioMensagem = ReturnEnvio(**data)

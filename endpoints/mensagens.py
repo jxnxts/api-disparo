@@ -96,7 +96,7 @@ def enviar_text_grupos(id: int, text: MensagemTextRequestGrupo):
 
 
 @router.post("/link/{id}")
-async def enviar_link_async(id: int, link: MensagemLinkRequest):
+async def enviar_link(id: int, link: MensagemLinkRequest):
     task = send_link_task.apply_async(args=[id, link])
     return JSONResponse({"task_id": task.id})
 
@@ -109,16 +109,19 @@ def enviar_link(id: int, link: MensagemLinkRequest):
         instance.id, instance.instanceId, instance.token)
     if instance_status.connected == True:
 
+        # print(link.dict())
+        
         message = link.message
         image = link.image
         linkUrl = link.linkUrl
         title = link.title
-        linkDescription = link.description
+        linkDescription = link.linkDescription
         phone = link.phone
         delay = link.delayMessage
+        linkType = link.linkType
 
         mensagem = send_link(instance.instanceId,
-                              instance.token, message, image, linkUrl, title, linkDescription, phone, delay)
+                              instance.token, message,phone, image,  linkUrl, title, linkDescription, linkType, delay)
 
         return Response(mensagem, 200, "sucess.", False)
     return Response(None, 400, f"{instance_status.error}.", True)

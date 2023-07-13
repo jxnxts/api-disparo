@@ -128,13 +128,14 @@ class MensagemTextRequest(BaseModel):
     delayMessage: Optional[int]
 
 class MensagemLinkRequest(BaseModel):
-    message: str
     phone: str
+    message: str
     image: Optional[str]
     linkUrl: Optional[str]
     title: Optional[str]
     linkDescription: Optional[str]
     delayMessage: Optional[int]
+    linkType: Optional[str]
 
 # {
 #   "phone": "5511999998888",
