@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from starlette.responses import JSONResponse
-from models.request import GruposRequest, MensagemImagemRequestGrupo, MensagemImagemRequest, MensagemAudioRequest, MensagemAudioRequestGrupo, MensagemVideoRequest, MensagemVideoRequestGrupo, MensagemTextRequest, MensagemLinkRequest, MensagemTextRequestGrupo
+from models.request import GruposRequest, MensagemImagemRequestGrupo, MensagemImagemRequest, MensagemAudioRequest, MensagemAudioRequestGrupo, MensagemVideoRequest, MensagemVideoRequestGrupo, MensagemTextRequest, MensagemLinkRequest, MensagemTextRequestGrupo, MensagemLinkRequestGrupo
 from models.response import Response
 from models.models import Grupos, Instance
 from db.database import Database
@@ -16,7 +16,8 @@ from celery_tasks.mensagens import (
     send_video_grupos_task,
     send_audio_task,
     send_audio_grupos_task,
-    send_link_task
+    send_link_task,
+    send_link_grupos_task
 )
 from config.celery_utils import get_task_info
 # import datetime
@@ -127,35 +128,42 @@ def enviar_link(id: int, link: MensagemLinkRequest):
     return Response(None, 400, f"{instance_status.error}.", True)
 
 
-# @router.post("/text_grupos/{id}")
-# async def enviar_text_grupos_async(id: int, text: MensagemTextRequestGrupo):
-#     task = send_text_grupos_task.apply_async(args=[id, text])
-#     return JSONResponse({"task_id": task.id})
+@router.post("/link_grupos/{id}")
+async def enviar_link_grupos_async(id: int, link: MensagemLinkRequestGrupo):
+    task = send_link_grupos_task.apply_async(args=[id, link])
+    return JSONResponse({"task_id": task.id})
 
-# def enviar_text_grupos(id: int, text: MensagemTextRequestGrupo):
+def enviar_link_grupos(id: int, link: MensagemLinkRequestGrupo):
 
-#     session = database.get_db_session(engine)
-#     instance = session.query(Instance).filter(Instance.id == id).first()
+    session = database.get_db_session(engine)
+    instance = session.query(Instance).filter(Instance.id == id).first()
 
-#     # Verifica o status da conexção com o whats
-#     instance_status = status_instance(
-#         instance.id, instance.instanceId, instance.token)
-#     if instance_status.connected == True:
+    # Verifica o status da conexção com o whats
+    instance_status = status_instance(
+        instance.id, instance.instanceId, instance.token)
+    if instance_status.connected == True:
 
-#         phones = session.query(Grupos).filter(
-#             Grupos.instance == instance.instanceId).all()
+        phones = session.query(Grupos).filter(
+            Grupos.instance == instance.instanceId).all()
 
-#         for number_group in phones:
+        for number_group in phones:
 
-#             message = text.message
-#             phone = number_group.number_group
-#             delay = 10
+          
+            phone = number_group.number_group
+            message = link.message
+            image = link.image
+            linkUrl = link.linkUrl
+            title = link.title
+            linkDescription = link.linkDescription
+            delay = link.delayMessage
+            linkType = link.linkType
+            
 
-#             send_text(instance.instanceId, instance.token,
-#                        message, phone, delay)
+            mensagem = send_link(instance.instanceId,
+                              instance.token, message,phone, image,  linkUrl, title, linkDescription, linkType, delay)
 
-#         return Response(None, 200, "sucess.", False)
-#     return Response(None, 400, f"{instance_status.error}.", True)
+        return Response(mensagem, 200, "sucess.", False)
+    return Response(None, 400, f"{instance_status.error}.", True)
 
 
 

@@ -176,3 +176,13 @@ class MensagemVideoRequestGrupo(BaseModel):
 
 class MensagemTextRequestGrupo(BaseModel):
     message: str
+
+
+class MensagemLinkRequestGrupo(BaseModel):
+    message: str
+    image: Optional[str]
+    linkUrl: Optional[str]
+    title: Optional[str]
+    linkDescription: Optional[str]
+    delayMessage: Optional[int]
+    linkType: Optional[str]

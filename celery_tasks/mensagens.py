@@ -12,22 +12,30 @@ from models.request import (
     MensagemVideoRequestGrupo,
     MensagemAudioRequest,
     MensagemAudioRequestGrupo,
-    MensagemTextRequestGrupo
+    MensagemTextRequestGrupo,
+    MensagemLinkRequestGrupo
 )
 
-
+# task send link
 @shared_task(bind=True, autoretry_for=(Exception,), retry_backoff=True, retry_kwargs={"max_retries": 5},
              name='universities:send_link_task')
 def send_link_task(self, id: int, link: MensagemLinkRequest) -> Any:
     return mensagens.enviar_link(id, link)
 
+# task send link in group
+@shared_task(bind=True, autoretry_for=(Exception,), retry_backoff=True, retry_kwargs={"max_retries": 5},
+             name='universities:send_link_grupos_task')
+def send_link_grupos_task(self, id: int, link: MensagemLinkRequestGrupo) -> Any:
+    return mensagens.enviar_link_grupos(id, link)
 
+
+# send text
 @shared_task(bind=True, autoretry_for=(Exception,), retry_backoff=True, retry_kwargs={"max_retries": 5},
              name='universities:send_text_task')
 def send_text_task(self, id: int, text: MensagemTextRequest) -> Any:
     return mensagens.enviar_text(id, text)
 
-
+# task send text in group
 @shared_task(bind=True, autoretry_for=(Exception,), retry_backoff=True, retry_kwargs={"max_retries": 5},
              name='universities:send_image_grupos_task')
 def send_text_grupos_task(self, id: int, text: MensagemTextRequestGrupo) -> Any:
