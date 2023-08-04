@@ -273,8 +273,12 @@ def get_groups(instanceId: str, token: str, group_id: str, getparticipantes: boo
     }
     response = requests.get(url, headers=headers)
 
+    
+
     if response.status_code == 200:
         data = response.json()
+
+        # print(data)
         grupoData = GroupMetadata(**data)
 
         if getparticipantes == True:
@@ -285,24 +289,27 @@ def get_groups(instanceId: str, token: str, group_id: str, getparticipantes: boo
     return grupoData
 
 
-def save_contacts(participant: str, grupoData: GroupMetadata):
+def save_contacts(participant: str, number_group: str):
 
     session = database.get_db_session(engine)
 
     # Check if a contact already exists for the given phone number
     contact = session.query(Contatos).filter_by(telefone=participant.phone).first()
 
-    # If contact exists, append the new group to the groups list
+    # Check if contact is not None
     if contact:
+        print(contact.telefone)
+
+        # If contact exists, append the new group to the groups list
         grupos = contact.grupos or []
-        if grupoData.phone not in grupos:
-            grupos.append(grupoData.phone)
+        if number_group not in grupos:
+            grupos.append(number_group)
         contact.grupos = grupos
     else:
         # If contact does not exist, create a new contact with the given group
         new_contact = Contatos(
             telefone=participant.phone,
-            grupos=[grupoData.phone]
+            grupos=[number_group]
         )
         session.add(new_contact)
 
