@@ -1,8 +1,9 @@
+import json
 from api.zapi import get_chats, send_link, save_contacts, get_groups
 from models.request import MensagemLinkRequest
 from endpoints.mensagens import enviar_link
-from endpoints.Import_grupo import get_grupos_by_instanceId
-import json
+# from endpoints.Import_grupo import get_grupos_by_instanceId
+from api.openai import transcribe_audio
 
 
 
@@ -34,6 +35,9 @@ import json
 
 
 # data = send_link(instanceId, token, message, phone, image, linkUrl, title, linkDescription, linkType, delayMessage)
-
-
 # get_grupos_by_instanceId(5)
+
+
+audio = "https://tempstorage.download/instances/3BD0D4835F1720C94259AE905DC37187/1E682FD28B44E3DB4FD648A5EC5432F5.ogg"
+data = transcribe_audio(audio)
+print(data)

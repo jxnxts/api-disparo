@@ -1,0 +1,15 @@
+{'result': [
+        {'box': {'probability': 0.99999, 'x_max': 586, 'y_max': 516, 'x_min': 453, 'y_min': 373
+            }, 'subjects': [
+                {'subject': 'RAFAELFONTELES', 'similarity': 0.99811
+                }
+            ]
+        },
+        {'box': {'probability': 0.99767, 'x_max': 111, 'y_max': 608, 'x_min': 60, 'y_min': 523
+            }, 'subjects': [
+                {'subject': 'RAFAELFONTELES', 'similarity': 0.02957
+                }
+            ]
+        }
+    ]
+}

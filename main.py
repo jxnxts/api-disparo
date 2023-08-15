@@ -35,6 +35,6 @@ async def add_process_time_header(request, call_next):
 
 
 if __name__ == '__main__':
-    uvicorn.run("main:app", host='127.0.0.1', port=8000,
+    uvicorn.run("main:app", host='127.0.0.1', port=8001,
                 log_level="info", reload=True)
     print("running")

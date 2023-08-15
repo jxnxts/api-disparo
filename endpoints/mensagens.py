@@ -83,7 +83,7 @@ def enviar_text_grupos(id: int, text: MensagemTextRequestGrupo):
 
             message = text.message
             phone = number_group.number_group
-            delay = 10
+            delay = 5
 
             send_text(instance.instanceId, instance.token,
                        message, phone, delay)
@@ -235,7 +235,7 @@ def enviar_image_grupos(id: int, image: MensagemImagemRequestGrupo):
             url = image.imagem
             legenda = image.caption
             phone = number_group.number_group
-            delay = 10
+            delay = 5
 
             send_image(instance.instanceId, instance.token,
                        url, legenda, phone, delay)
@@ -294,7 +294,7 @@ def enviar_video_grupos(id: int, video: MensagemVideoRequestGrupo):
             url = video.video
             legenda = video.caption
             phone = number_group.number_group
-            delay = 15
+            delay = 5
 
             send_video(instance.instanceId, instance.token,
                        url, legenda, phone, delay)
@@ -353,7 +353,7 @@ def enviar_audio_grupos(id: int, audio: MensagemAudioRequestGrupo):
 
             url = audio.audio
             phone = number_group.number_group
-            delay = 15
+            delay = 5
             delayGravando = audio.delayTyping
 
             send_audio(instance.instanceId, instance.token,
