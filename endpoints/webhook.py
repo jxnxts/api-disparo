@@ -47,12 +47,12 @@ async def webhookEnpoint(request: Request):
 
 def webhook(json_data):
 
-    # if json_data.get("image"):
-    #     try:
-    #         json_data = imageProcess(json_data)
-    #         print(json_data)
-    #     except:
-    #         pass
+    if json_data.get("image"):
+        try:
+             json_data = imageProcess(json_data)
+             print(json_data)
+        except:
+             pass
     # # elif json_data.get("video"):
     # #     videoProcess(json_data)
     # # elif json_data.get("audio"):
@@ -62,7 +62,7 @@ def webhook(json_data):
     # # elif json_data.get("link"):
     # #     linkProcess(json_data)
     # else:
-    #     pass
+    #     pass:
 
     # Save JSON data to MongoDB
     mongo_result = save_to_mongo_mesage(json_data)
