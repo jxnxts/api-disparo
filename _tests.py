@@ -4,6 +4,7 @@ from models.request import MensagemLinkRequest
 from endpoints.mensagens import enviar_link
 # from endpoints.Import_grupo import get_grupos_by_instanceId
 from api.openai import transcribe_audio
+from api.compreFace import _recognitionImage
 
 
 
@@ -38,6 +39,6 @@ from api.openai import transcribe_audio
 # get_grupos_by_instanceId(5)
 
 
-audio = "https://tempstorage.download/instances/3BD0D4835F1720C94259AE905DC37187/1E682FD28B44E3DB4FD648A5EC5432F5.ogg"
-data = transcribe_audio(audio)
+foto = "https://gnonfanc.sirv.com/WhatsApp%20Image%202023-08-21%20at%2014.33.04.jpeg"
+data = _recognitionImage(foto)
 print(data)

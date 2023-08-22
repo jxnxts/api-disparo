@@ -20,7 +20,6 @@ face_collection: FaceCollection = recognition.get_face_collection()
 subjects: Subjects = recognition.get_subjects()
 
 
-
 def _recognitionImage(image):
     data = recognition.recognize(image_path=image)
     return data
