@@ -56,7 +56,7 @@ def send_image_task(self, id: int, image: MensagemImagemRequest) -> Any:
 @shared_task(bind=True, autoretry_for=(Exception,), retry_backoff=True, retry_kwargs={"max_retries": 5},
              name='universities:send_image_grupos_task')
 def send_image_grupos_task(self, id: int, image: MensagemImagemRequestGrupo) -> Any:
-    return mensagens.enviar_image_grupos(id, image)
+    return mensagens.enviar_image_grupos_func(id, image)
 
 
 @shared_task(bind=True, autoretry_for=(Exception,), retry_backoff=True, retry_kwargs={"max_retries": 5},
@@ -68,7 +68,7 @@ def send_video_task(self, id: int, video: MensagemVideoRequest) -> Any:
 @shared_task(bind=True, autoretry_for=(Exception,), retry_backoff=True, retry_kwargs={"max_retries": 5},
              name='universities:send_video_grupos_task')
 def send_video_grupos_task(self, id: int, video: MensagemVideoRequestGrupo) -> Any:
-    return mensagens.enviar_video_grupos(id, video)
+    return mensagens.enviar_video_grupos_func(id, video)
 
 
 @shared_task(bind=True, autoretry_for=(Exception,), retry_backoff=True, retry_kwargs={"max_retries": 5},

@@ -65,7 +65,6 @@ def enviar_text(id: int, text: MensagemTextRequest):
 async def enviar_text_grupos_async(id: int, text: MensagemTextRequestGrupo):
     task = send_text_grupos_task.apply_async(args=[id, text])
     return JSONResponse({"task_id": task.id})
-
 def enviar_text_grupos(id: int, text: MensagemTextRequestGrupo):
 
     session = database.get_db_session(engine)
@@ -100,7 +99,6 @@ def enviar_text_grupos(id: int, text: MensagemTextRequestGrupo):
 async def enviar_link(id: int, link: MensagemLinkRequest):
     task = send_link_task.apply_async(args=[id, link])
     return JSONResponse({"task_id": task.id})
-
 def enviar_link(id: int, link: MensagemLinkRequest):
     session = database.get_db_session(engine)
     instance = session.query(Instance).filter(Instance.id == id).first()
@@ -127,12 +125,10 @@ def enviar_link(id: int, link: MensagemLinkRequest):
         return Response(mensagem, 200, "sucess.", False)
     return Response(None, 400, f"{instance_status.error}.", True)
 
-
 @router.post("/link_grupos/{id}")
 async def enviar_link_grupos_async(id: int, link: MensagemLinkRequestGrupo):
     task = send_link_grupos_task.apply_async(args=[id, link])
     return JSONResponse({"task_id": task.id})
-
 def enviar_link_grupos(id: int, link: MensagemLinkRequestGrupo):
 
     session = database.get_db_session(engine)
@@ -164,22 +160,6 @@ def enviar_link_grupos(id: int, link: MensagemLinkRequestGrupo):
 
         return Response(mensagem, 200, "sucess.", False)
     return Response(None, 400, f"{instance_status.error}.", True)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -217,7 +197,7 @@ async def enviar_image_grupos(id: int, image: MensagemImagemRequestGrupo):
     return JSONResponse({"task_id": task.id})
 
 
-def enviar_image_grupos(id: int, image: MensagemImagemRequestGrupo):
+def enviar_image_grupos_func(id: int, image: MensagemImagemRequestGrupo):
 
     session = database.get_db_session(engine)
     instance = session.query(Instance).filter(Instance.id == id).first()
@@ -277,7 +257,7 @@ async def enviar_video_grupos(id: int, video: MensagemVideoRequestGrupo):
     return JSONResponse({"task_id": task.id})
 
 
-def enviar_video_grupos(id: int, video: MensagemVideoRequestGrupo):
+def enviar_video_grupos_func(id: int, video: MensagemVideoRequestGrupo):
     session = database.get_db_session(engine)
     instance = session.query(Instance).filter(Instance.id == id).first()
 
