@@ -49,6 +49,7 @@ def webhook(json_data):
 
     if json_data.get("image"):
         try:
+             print("Processando a imagem")
              json_data = imageProcess(json_data)
              print(json_data)
         except:
