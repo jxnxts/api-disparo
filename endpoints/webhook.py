@@ -78,6 +78,7 @@ def webhook(json_data):
 
 
 def imageProcess(json_data):
+    print("iniciando: api de imagem")
     data = _recognitionImage(json_data["image"]["imageUrl"])
     print(data)  # Chamada à função de reconhecimento de imagem
 
