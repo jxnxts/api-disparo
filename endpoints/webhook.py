@@ -53,6 +53,7 @@ def webhook(json_data):
              json_data = imageProcess(json_data)
              print(json_data)
         except:
+             print("error: api de imagem")
              pass
     # # elif json_data.get("video"):
     # #     videoProcess(json_data)
